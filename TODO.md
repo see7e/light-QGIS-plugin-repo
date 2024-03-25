@@ -1,0 +1,6 @@
+- [x] configure the "engine" to detect the plugins and load them into the server
+- [ ] refactor the `plugin_list.html` as a template to show the plugins listed in the database
+- [ ] add some HTMX to smoth the user experience
+- [ ] set download counter
+- [ ] configure the api to deliver the plugins to QGIS (**MAIN TASK**)
+- [ ] parse the other methods of the `PHP` code
