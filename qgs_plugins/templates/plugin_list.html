@@ -1,78 +1,11 @@
-{% comment %} <!DOCTYPE html>
-<html>
-<head>
-    <title>QGIS Plugins Repository</title>
-</head>
-<body>
-    <h1>QGIS Plugins Repository</h1>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col">
-                {% for plugin in plugins %}
-                <div class="card my-3">
-                    <div class="card-header">
-                        <h2 id="{{ plugin.name }}">{{ plugin.name }} : {{ plugin.version }}</h2>
-                    </div>
-                    <div class="card-body">
-                        <div class="card-title">
-                            <h3>{{ plugin.description }}</h3>
-                        </div>
-                        <div class="about">
-                            <p><i>{{ plugin.about }}</i></p>
-                        </div>
-                        <div class="tags">
-                            <strong>Tags:</strong> {{ plugin.tags }}
-                        </div>
-                        <div class="download">
-                            <strong>Download:</strong> <a href="{% url 'download_plugin' plugin.id %}">{{ plugin.file_name }}</a>
-                        </div>
-                        <div class="author">
-                            <strong>Author:</strong> {{ plugin.author_name }}
-                        </div>
-                        <div class="version">
-                            <strong>Version:</strong> {{ plugin.version }}
-                        </div>
-                        <div class="experimental">
-                            <strong>Experimental:</strong> {{ plugin.experimental }}
-                        </div>
-                        <div class="deprecated">
-                            <strong>Deprecated:</strong> {{ plugin.deprecated }}
-                        </div>
-                        <div class="minversion">
-                            <strong>Minimum QGIS Version:</strong> {{ plugin.qgis_minimum_version }}
-                        </div>
-                        <div class="maxversion">
-                            <strong>Maximum QGIS Version:</strong> {{ plugin.qgis_maximum_version }}
-                        </div>
-                        <div class="homepage">
-                            <strong>Home page:</strong> <a href="{{ plugin.homepage }}">{{ plugin.homepage }}</a>
-                        </div>
-                        <div class="tracker">
-                            <strong>Tracker:</strong> <a href="{{ plugin.tracker }}">{{ plugin.tracker }}</a>
-                        </div>
-                        <div class="repository">
-                            <strong>Repository:</strong> <a href="{{ plugin.repository }}">{{ plugin.repository }}</a>
-                        </div>
-                        {% if plugin.downloads %}
-                        <div class="downloads">
-                            <strong>Number of downloads:</strong> {{ plugin.downloads }}
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</body>
-</html> {% endcomment %}
-
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/icon" href="{% static 'img/favicon.ico' %}">
     <title>QGIS Plugins Repository</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
     <style>
@@ -149,86 +82,78 @@
             <div class="col-lg-3 col-md-4">
                 <div class="list-group">
                     <div class="text-white bg-dark list-group-item"><h2>Plugins</h2></div>
-                    <xsl:for-each select="/plugins/pyqgis_plugin">
-                        <a href="#{name}" class="list-group-item list-group-item-action list-group-item-light">
-                            <xsl:value-of select="@name" />&#160;
-                            <xsl:value-of select="@version" />
-                        </a>
-                    </xsl:for-each>
+                    {% for plugin in plugins %}
+                    <a href="#{{ plugin.name }}" class="list-group-item list-group-item-action list-group-item-light">
+                        {{ plugin.name }}&#160;{{ plugin.version }}
+                    </a>
+                    {% endfor %}
                 </div>
             </div>
             <div class="col">
-                <xsl:for-each select="/plugins/pyqgis_plugin">
-                    <div class="card my-3">
-                        <div class="card-header">
-                            <h2 id="{@name}">
-                                <xsl:value-of select="@name" /> : <xsl:value-of select="@version" />
-                            </h2>
-                        </div>
-                        <div class="card-body">
-                            <div class="card-title">
-                                <h3><xsl:value-of select="description" /></h3>
-                            </div>
-                            <div class="about">
-                                <p><i><xsl:value-of select="about" /></i></p>
-                            </div>
-                            <div class="tags">
-                                <strong>Tags:</strong>&#160;<xsl:value-of select="tags" />
-                            </div>
-                            <div class="download">
-                                <strong>Download:</strong>&#160;
-                                <a href="{download_url}"><xsl:value-of select="file_name" /></a>
-                            </div>
-                            <div class="author">
-                                <strong>Author:</strong>&#160;<xsl:value-of select="author_name" />
-                            </div>
-                            <div class="version">
-                                <strong>Version:</strong>&#160;<xsl:value-of select="version" />
-                            </div>
-                            <div class="experimental">
-                                <strong>Experimental:</strong>&#160;<xsl:value-of select="experimental" />
-                            </div>
-                            <div class="deprecated">
-                                <strong>Deprecated:</strong>&#160;<xsl:value-of select="deprecated" />
-                            </div>
-                            <div class="minversion">
-                                <strong>Minimum QGIS Version:</strong>&#160;<xsl:value-of select="qgis_minimum_version" />
-                            </div>
-                            <div class="maxversion">
-                                <strong>Maximum QGIS Version:</strong>&#160;<xsl:value-of select="qgis_maximum_version" />
-                            </div>
-                            <div class="homepage">
-                                <strong>Home page:</strong>&#160;
-                                <a href="{homepage}">
-                                    <xsl:value-of select="homepage" />
-                                </a>
-                            </div>
-                            <div class="tracker">
-                                <strong>Tracker:</strong>&#160;
-                                <a href="{tracker}">
-                                    <xsl:value-of select="tracker" />
-                                </a>
-                            </div>
-                            <div class="repository">
-                                <strong>Repository:</strong>&#160;
-                                <a href="{repository}">
-                                    <xsl:value-of select="repository" />
-                                </a>
-                            </div>
-                            <xsl:if test="downloads != ''">
-                                <div class="downloads">
-                                    <strong>Number of downloads:</strong>&#160;<xsl:value-of select="downloads" />
-                                </div>
-                            </xsl:if>
-                        </div>
+                {% for plugin in plugins %}
+                <div class="card my-3">
+                    <div class="card-header">
+                        <h2 id="{{ plugin.name }}">
+                            {{ plugin.name }} : {{ plugin.version }}
+                        </h2>
                     </div>
-                </xsl:for-each>
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h3>{{ plugin.description }}</h3>
+                        </div>
+                        <div class="about">
+                            <p><i>{{ plugin.about }}</i></p>
+                        </div>
+                        <div class="tags">
+                            <strong>Tags:</strong>&#160;{{ plugin.tags }}
+                        </div>
+                        <div class="download">
+                            <strong>Download:</strong>&#160;
+                            <a href="{% url 'qgs_plugins:download' plugin.file_name %}">{{ plugin.file_name }}</a>
+                        </div>
+                        <div class="author">
+                            <strong>Author:</strong>&#160;{{ plugin.uploaded_by }}
+                        </div>
+                        <div class="version">
+                            <strong>Version:</strong>&#160;{{ plugin.version }}</div>
+                        <div class="experimental">
+                            <strong>Experimental:</strong>&#160;{% if plugin.experimental %}Yes{% else %}No{% endif %}
+                        </div>
+                        <div class="deprecated">
+                            <strong>Deprecated:</strong>&#160;{% if plugin.deprecated %}Yes{% else %}No{% endif %}
+                        </div>
+                        <div class="minversion">
+                            <strong>Minimum QGIS Version:</strong>&#160;{{ plugin.qgis_minimum_version }}
+                        </div>
+                        <div class="maxversion">
+                            <strong>Maximum QGIS Version:</strong>&#160;{{ plugin.qgis_maximum_version }}
+                        </div>
+                        <div class="homepage">
+                            <strong>Home page:</strong>&#160;
+                            <a href="{{ plugin.homepage }}">{{ plugin.homepage }}</a>
+                        </div>
+                        <div class="tracker">
+                            <strong>Tracker:</strong>&#160;
+                            <a href="{{ plugin.tracker }}">{{ plugin.tracker }}</a>
+                        </div>
+                        <div class="repository">
+                            <strong>Repository:</strong>&#160;
+                            <a href="{{ plugin.repository }}">{{ plugin.repository }}</a>
+                        </div>
+                        {% if plugin.downloads %}
+                        <div class="downloads">
+                            <strong>Number of downloads:</strong>&#160;{{ plugin.downloads }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
     <footer class="footer">
         <div class="container text-center">
-            <span class="text-muted">This plugin repository is generated using <a href="https://gitlab.com/GIS-projects/phpQGISrepository" target="_blank">phpQGISrepository</a>.</span>
+            <span class="text-muted">This plugin repository is generated using <a href="https://github.com/see7e/light-QGIS-plugin-repo" target="_blank">light-QGIS-plugin-repo</a>.</span>
         </div>
     </footer>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -236,5 +161,3 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 </body>
 </html>
-
-
