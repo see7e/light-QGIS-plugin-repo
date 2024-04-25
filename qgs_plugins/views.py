@@ -34,7 +34,7 @@ def download_plugin(request: HttpRequest, plugin_name: str) -> HttpResponse:
     file_path = os.path.join(settings.PLUGIN_ZIP_UPLOAD_DIR, f'{_file_name}')
     # Check if the plugin file exists
     if not os.path.exists(file_path):
-        return HttpResponse(f"The zip-file for plugin '{plugin_name}' does not exist", status=404)
+        return HttpResponse(f"{request.path}: The zip-file for plugin '{plugin_name}' does not exist.", status=404)
 
     # Increment download count if DOWNLOAD_COUNTER is enabled
     if settings.DOWNLOAD_COUNTER:
@@ -54,14 +54,14 @@ def download_plugin(request: HttpRequest, plugin_name: str) -> HttpResponse:
 
 # Add view function to handle plugin upload
 def upload_plugin(request: HttpRequest) -> HttpResponse:
-    return HttpResponse(f"Upload Operation not implemented yet.")
-    if request.method == 'POST' and request.FILES['plugin_zip']:
-        plugin_zip = request.FILES['plugin_zip']
-        # Save the uploaded plugin zip file to the designated directory
-        fs = FileSystemStorage(location=settings.PLUGIN_ZIP_UPLOAD_DIR)
-        filename = fs.save(plugin_zip.name, plugin_zip)
-        # Optionally, update the database with the file path or other relevant information
-        # For example:
-        # Plugin.objects.create(zip_path=filename, ...)
-        return redirect('plugin_list')
-    return render(request, 'upload_plugin.html')
+    return HttpResponse(f"{request.path} operation not implemented yet.")
+    # if request.method == 'POST' and request.FILES['plugin_zip']:
+    #     plugin_zip = request.FILES['plugin_zip']
+    #     # Save the uploaded plugin zip file to the designated directory
+    #     fs = FileSystemStorage(location=settings.PLUGIN_ZIP_UPLOAD_DIR)
+    #     filename = fs.save(plugin_zip.name, plugin_zip)
+    #     # Optionally, update the database with the file path or other relevant information
+    #     # For example:
+    #     # Plugin.objects.create(zip_path=filename, ...)
+    #     return redirect('plugin_list')
+    # return render(request, 'upload_plugin.html')
