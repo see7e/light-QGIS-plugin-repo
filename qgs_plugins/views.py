@@ -55,13 +55,13 @@ def download_plugin(request: HttpRequest, plugin_name: str) -> HttpResponse:
 # Add view function to handle plugin upload
 def upload_plugin(request: HttpRequest) -> HttpResponse:
     return HttpResponse(f"{request.path} operation not implemented yet.")
-    # if request.method == 'POST' and request.FILES['plugin_zip']:
-    #     plugin_zip = request.FILES['plugin_zip']
-    #     # Save the uploaded plugin zip file to the designated directory
-    #     fs = FileSystemStorage(location=settings.PLUGIN_ZIP_UPLOAD_DIR)
-    #     filename = fs.save(plugin_zip.name, plugin_zip)
-    #     # Optionally, update the database with the file path or other relevant information
-    #     # For example:
-    #     # Plugin.objects.create(zip_path=filename, ...)
-    #     return redirect('plugin_list')
-    # return render(request, 'upload_plugin.html')
+    if request.method == 'POST' and request.FILES['plugin_zip']:
+        plugin_zip = request.FILES['plugin_zip']
+        # Save the uploaded plugin zip file to the designated directory
+        fs = FileSystemStorage(location=settings.PLUGIN_ZIP_UPLOAD_DIR)
+        filename = fs.save(plugin_zip.name, plugin_zip)
+        # Optionally, update the database with the file path or other relevant information
+        # For example:
+        # Plugin.objects.create(zip_path=filename, ...)
+        return redirect('plugin_list')
+    return render(request, 'upload_plugin.html')

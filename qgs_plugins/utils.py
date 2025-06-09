@@ -9,30 +9,25 @@ from .models import Plugin
 
 
 def update_plugins():
-    # plugins_dir = os.path.join(settings.BASE_DIR, 'qgs_plugins', 'plugins')
-    # # print(plugins_dir)
-
-    # if len(os.listdir(plugins_dir)) == 0:
-    #     return
-    
-    for plugin_file in os.listdir(settings.PLUGIN_ZIP_UPLOAD_DIR):
+    def handle_plugin_file(plugin_file):
         plugin_path = os.path.join(settings.PLUGIN_ZIP_UPLOAD_DIR, plugin_file)
-        # print(plugin_path)
-
         if os.path.isfile(plugin_path) and plugin_file.endswith('.zip'):
             metadata = parse_metadata(plugin_path)
-            # print(metadata)
-            
             if metadata:
-                existing_plugin = Plugin.objects.filter(name=metadata['name']).first()
-                
-                if not existing_plugin:
-                    create_new_plugin(metadata, plugin_file)
-                else:
-                    existing_version = existing_plugin.version
-                    new_version = metadata['version']
-                    if compare_versions(new_version, existing_version) > 0:
-                        update_existing_plugin(existing_plugin, metadata)
+                process_plugin_metadata(metadata, plugin_file)
+
+    def process_plugin_metadata(metadata, plugin_file):
+        existing_plugin = Plugin.objects.filter(name=metadata['name']).first()
+        if not existing_plugin:
+            create_new_plugin(metadata, plugin_file)
+        else:
+            existing_version = existing_plugin.version
+            new_version = metadata['version']
+            if compare_versions(new_version, existing_version) > 0:
+                update_existing_plugin(existing_plugin, metadata)
+
+    for plugin_file in os.listdir(settings.PLUGIN_ZIP_UPLOAD_DIR):
+        handle_plugin_file(plugin_file)
 
 
 def parse_metadata(zip_file):
@@ -71,8 +66,7 @@ def update_existing_plugin(existing_plugin, metadata):
     existing_plugin.qgis_minimum_version = metadata.get('qgisMinimumVersion', existing_plugin.qgis_minimum_version)
     existing_plugin.qgis_maximum_version = metadata.get('qgisMaximumVersion', existing_plugin.qgis_maximum_version)
     existing_plugin.homepage = metadata.get('homepage', existing_plugin.homepage)
-    # existing_plugin.file_name = os.path.basename(existing_plugin.file_name)
-    existing_plugin.file_name = existing_plugin.file_name
+    existing_plugin.file_name = existing_plugin.file_name or os.path.basename(existing_plugin.file_name)
     existing_plugin.download_url = metadata.get('downloadUrl', existing_plugin.download_url)
     existing_plugin.uploaded_by = metadata.get('author', existing_plugin.uploaded_by)
     existing_plugin.create_date = datetime.now()
