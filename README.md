@@ -1,3 +1,11 @@
+---
+title: Light QGis Repo
+tags: studies, programming, python, django, QGis
+use: Project, Repository
+languages: Python
+dependences: Django, QGis
+---
+
 > [!NOTE]
 > This repository is based in three different implementations, I've built using the Django Framework only because I'm more familiar with it, here are the references:
 > - [QGIS-Django](https://github.com/qgis/QGIS-Django/tree/master)
